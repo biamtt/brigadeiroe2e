@@ -61,7 +61,7 @@ export class PageObject {
     }
 
     //look for product list and add to card the first one
-    lookForProductListAndAttToCart() {
+    lookForProductListAndAddToCart() {
         cy.get(this.productList).then(($items) => {
             if ($items.length > 0) {
                 const firstItem = cy.wrap($items).first();

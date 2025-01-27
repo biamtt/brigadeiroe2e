@@ -15,7 +15,7 @@ describe('Practicing e2e', () => {
     it('Should login to the website, search for a product and add to cart', () => {
         cy.login(credentials.email, credentials.password);
         cy.searchProduct(productCode);
-        pageObject.lookForProductListAndAttToCart();
+        pageObject.lookForProductListAndAddToCart();
 
     });
 })
