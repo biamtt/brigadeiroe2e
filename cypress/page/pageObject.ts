@@ -5,8 +5,11 @@ export class PageObject {
     private emailInput = 'input[id="input-email"]';
     private passwordInput = 'input[id="input-password"]';
     private proceedLoginButton = 'input[type="submit"]';
-    private searchBar = 'input[placeholder="Search For Products"]';
+    private searchInput = 'input[name="search"]';
     private searchButton = 'button[type="submit"]';
+    private productList = '[data-list="product-layout product-list col-12"]';
+    private addToCartItemButton = 'button[title="Add to Cart"]';
+
 
     //to visit url
     visit(url: string) {
@@ -19,6 +22,7 @@ export class PageObject {
             .click();
     }
 
+    //to enter the credentials and proceed the login
     enterCredentialAndProceedLogin(email: string, password: string) {
         cy.get(this.emailInput)
             .should('exist')
@@ -37,17 +41,42 @@ export class PageObject {
 
     }
 
-    searchByItemAndGoToItemPage(productID: string) {
-        return cy.get(this.searchBar)
+    //search product by product code
+    searchProduct(productCode: string) {
+        cy.get(this.searchInput)
+            .eq(0)
+            .scrollIntoView()
             .should('exist')
             .and('be.visible')
-            .type(productID);
+            .clear()
+            .type(productCode)
+            .should('have.value', productCode);
 
-        // cy.get(this.searchButton)
-        //     .should("contain.text", "SEARCH")
-        //     .and('be.visible')
-        //     .click();
+        cy.get(this.searchButton)
+            .eq(0)
+            .should('contain.text', "Search")
+            .and('be.visible')
+            .click();
+
     }
 
+    //look for product list and add to card the first one
+    lookForProductListAndAttToCart() {
+        cy.get(this.productList).then(($items) => {
+            if ($items.length > 0) {
+                const firstItem = cy.wrap($items).first();
 
+                firstItem.trigger('mouseover');
+
+                firstItem.find(this.addToCartItemButton)
+                    .first()
+                    .scrollIntoView()
+                    .should('exist')
+                    .click({force: true});
+                cy.log('Product added to cart');
+            } else {
+                cy.log('No products found');
+            }
+        });
+    }
 }
