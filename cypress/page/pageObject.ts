@@ -4,6 +4,9 @@ export class PageObject {
     private myAccountButton = '//*[@id="widget-navbar-217834"]/ul/li[6]/a';
     private emailInput = 'input[id="input-email"]';
     private passwordInput = 'input[id="input-password"]';
+    private proceedLoginButton = 'input[type="submit"]';
+    private searchBar = 'input[placeholder="Search For Products"]';
+    private searchButton = 'button[type="submit"]';
 
     //to visit url
     visit(url: string) {
@@ -13,22 +16,37 @@ export class PageObject {
     //go to My Account
     goToMyAccount() {
         cy.xpath(this.myAccountButton)
-            .click()
+            .click();
     }
 
-    //enter the login credentials
-    enterEmailLogin(email: string) {
-        return cy.get(this.emailInput)
+    enterCredentialAndProceedLogin(email: string, password: string) {
+        cy.get(this.emailInput)
             .should('exist')
             .and('be.visible')
-            .type(email)
-    }
+            .type(email);
 
-    enterPasswordLogin(password: string) {
         cy.get(this.passwordInput)
             .should('exist')
             .and('be.visible')
             .type(password);
+
+        cy.get(this.proceedLoginButton)
+            .should("contain.value", "Login")
+            .and('be.visible')
+            .click();
+
+    }
+
+    searchByItemAndGoToItemPage(productID: string) {
+        return cy.get(this.searchBar)
+            .should('exist')
+            .and('be.visible')
+            .type(productID);
+
+        // cy.get(this.searchButton)
+        //     .should("contain.text", "SEARCH")
+        //     .and('be.visible')
+        //     .click();
     }
 
 

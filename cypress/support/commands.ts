@@ -37,8 +37,10 @@
 // }
 
 import 'cypress-xpath';
+
 require('cypress-xpath')
 import {PageObject} from "../page/pageObject";
+
 
 Cypress.Commands.add('login', (email: string, password: string) => {
     const pageObject = new PageObject();
@@ -46,6 +48,11 @@ Cypress.Commands.add('login', (email: string, password: string) => {
 
     pageObject.visit(url);
     pageObject.goToMyAccount();
-    pageObject.enterEmailLogin(email);
-    pageObject.enterPasswordLogin(password);
+    pageObject.enterCredentialAndProceedLogin(email, password);
+})
+
+Cypress.Commands.add('productToCard', (productID: string) => {
+    const pageObject = new PageObject();
+
+    pageObject.searchByItemAndGoToItemPage(productID);
 })
