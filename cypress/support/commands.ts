@@ -50,10 +50,11 @@ Cypress.Commands.add('login', (email: string, password: string) => {
     pageObject.enterCredentialAndProceedLogin(email, password);
 });
 
-Cypress.Commands.add('searchProduct', (productCode: string) => {
+Cypress.Commands.add('searchProductAndAddToCart', (productCode: string) => {
     const pageObject = new PageObject();
 
     pageObject.searchProduct(productCode);
-});
-
-Cypress.Commands
+    pageObject.lookForProductListAndGoToProductPage();
+    pageObject.AddToCart();
+    pageObject.goToCart();
+})

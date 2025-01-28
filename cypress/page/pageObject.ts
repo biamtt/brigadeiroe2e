@@ -8,7 +8,8 @@ export class PageObject {
     private searchInput = 'input[name="search"]';
     private searchButton = 'button[type="submit"]';
     private productList = '[data-list="product-layout product-list col-12"]';
-    private addToCartItemButton = 'button[title="Add to Cart"]';
+    private addToCartButton = 'button[title="Add to Cart"]';
+    private goToCartButton = '//*[@id="notification-box-top"]/div/div[2]/div[2]/div[1]/a';
 
 
     //to visit url
@@ -56,27 +57,35 @@ export class PageObject {
             .eq(0)
             .should('contain.text', "Search")
             .and('be.visible')
-            .click();
+            .click({force: true});
 
     }
 
     //look for product list and add to card the first one
-    lookForProductListAndAddToCart() {
+    lookForProductListAndGoToProductPage() {
         cy.get(this.productList).then(($items) => {
             if ($items.length > 0) {
                 const firstItem = cy.wrap($items).first();
 
-                firstItem.trigger('mouseover');
-
-                firstItem.find(this.addToCartItemButton)
-                    .first()
-                    .scrollIntoView()
-                    .should('exist')
-                    .click({force: true});
-                cy.log('Product added to cart');
+                firstItem.click()
+                cy.log("Product found")
             } else {
-                cy.log('No products found');
+                cy.log("Not found");
             }
-        });
+        })
     }
+
+    AddToCart() {
+        cy.get(this.addToCartButton)
+            .eq(0)
+            .click({force: true});
+    }
+
+    goToCart(){
+        cy.xpath(this.goToCartButton)
+            .should('contain.text', 'View Cart')
+            .click();
+    }
+
+
 }
